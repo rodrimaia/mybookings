@@ -1,0 +1,22 @@
+.container {
+}
+
+.main {
+}
+
+.footer {
+}
+
+.footer img {
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+}
+
+
+@media (max-width: 600px) {
+  .grid {
+  }
+}
