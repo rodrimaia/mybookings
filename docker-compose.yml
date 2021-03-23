@@ -4,7 +4,7 @@ services:
   api:
     build: ./api/
     ports:
-      - '3001:4567'
+      - '3001:3001'
 
   web:
     build: ./web

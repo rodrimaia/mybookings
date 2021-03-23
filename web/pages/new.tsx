@@ -13,13 +13,6 @@ import Header from "../components/header";
 import BookingForm from "../components/BookingForm";
 
 export default function Details() {
-  const router = useRouter();
-
-  const newBooking = {
-
-  }
-  const [booking, setBooking] = useState<Booking>();
-
   return (
     <div>
       <Head>

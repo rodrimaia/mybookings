@@ -47,6 +47,8 @@ public class BookingService {
         where.between("checkin", booking.getCheckIn(), booking.getCheckOut());
         where.or();
         where.between("checkout", booking.getCheckIn(), booking.getCheckOut());
+        where.and();
+        where.ne("id", booking.getId());
         PreparedQuery<Booking> preparedQuery = where.prepare();
 
         List<Booking> overlapped = bookingDao.query(preparedQuery);

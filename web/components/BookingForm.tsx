@@ -67,8 +67,8 @@ export default function BookingForm({ booking }: BookingFormType) {
                   router.push("/");
                 }, 1000);
               })
-              .catch(() => {
-                toast.error("Oh No! Something happened =/");
+              .catch((error) => {
+                toast.error(error.message);
               });
           }}
         >

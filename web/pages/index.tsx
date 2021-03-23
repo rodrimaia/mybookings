@@ -8,25 +8,6 @@ import type { Booking } from "../types";
 import useSWR from "swr";
 import axios from "axios";
 
-type ApiResponse = {
-  data: { data: Booking[] };
-};
-
-export async function getStaticProps() {
-  const res = await fetch('http://localhost:3001/bookings');
-  const response: ApiResponse = await res.json();
-
-  return {
-    props: {
-      bookings: response.data,
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every second
-    revalidate: 5, // In seconds
-  };
-}
-
 export default function Home() {
   const router = useRouter();
 
@@ -64,7 +45,7 @@ export default function Home() {
               </tr>
               </thead>
               <tbody>
-              {(data?.data?.data as Booking[])?.map((m) => (
+              {((data as any)?.data?.data as Booking[])?.map((m) => (
                 <tr
                   key={m.id}
                   onClick={() => router.push(`/${m.id}`)}

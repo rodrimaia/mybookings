@@ -1,14 +1,16 @@
-FROM node:10.18.1
+FROM node:alpine
+WORKDIR /app
 
-COPY yarn.lock package.json /code/
-WORKDIR /code
-
+COPY package.json .
+COPY yarn.lock .
 RUN yarn install --frozen-lockfile
 
-COPY . .
-
-RUN yarn run build
+COPY pages pages
+COPY types.ts types.ts
+COPY public public
+COPY components components
+COPY styles styles
+RUN yarn build
 
 EXPOSE 3000
-
-CMD yarn run start
+ENTRYPOINT ["npm", "run", "dev"]

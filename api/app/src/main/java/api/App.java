@@ -24,30 +24,16 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-abstract class Response {
-    private int code;
-}
-
-@Data
-class SuccessResponse extends Response {
+class SuccessResponse {
     private Object data;
     private int code;
-
-    public SuccessResponse(Object data, int code) {
-        super(code);
-        this.data = data;
-    }
 }
 
 @Data
+@AllArgsConstructor
 class ErrorResponse extends Response {
     private String message;
     private int code;
-
-    public ErrorResponse(String message, int code) {
-        super(code);
-        this.message = message;
-    }
 }
 
 public class App {
