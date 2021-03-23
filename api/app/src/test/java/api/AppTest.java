@@ -3,12 +3,93 @@
  */
 package api;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import lombok.SneakyThrows;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
 
-        assertTrue(true);
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+
+    private static BookingService bookingService;
+
+    @BeforeClass
+    public static void init() throws SQLException {
+        String databaseUrl = "jdbc:h2:mem:bookings-test";
+        ConnectionSource connectionSource = null;
+            connectionSource = new JdbcConnectionSource(databaseUrl);
+        Dao<Booking, Integer> bookingsDao =
+                DaoManager.createDao(connectionSource, Booking.class);
+
+        bookingService = new BookingService(bookingsDao);
+
+        App.setupDB(connectionSource, bookingsDao);
+    }
+
+
+    @Test
+    public void canListBookings() throws SQLException {
+        List<Booking> booking = bookingService.getAll();
+        assertTrue(booking.size() > 0);
+    }
+
+    @Test
+    public void canGetOneBooking() throws SQLException, BookingNotFoundException {
+        Booking booking = bookingService.getById(1);
+
+        assertFalse(booking.getName().isEmpty());
+    }
+
+    @SneakyThrows
+    @Test
+    public void canCreateBookings() throws Exception, OverlappingBookingsException, BookingNotFoundException {
+        int oldSize = bookingService.getAll().size();
+
+
+        Booking booking = bookingService.getById(1);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH, 1);
+
+        booking.setCheckIn(c.getTime().getTime());
+        c.add(Calendar.MONTH, 1);
+        booking.setCheckOut(c.getTime().getTime());
+        booking.setId(0);
+
+        int newId = bookingService.create(booking);
+
+        assertTrue(newId > 0 );
+        int newSize = bookingService.getAll().size();
+        assertTrue(newSize > oldSize);
+    }
+
+
+    @Test
+    public void canNotCreateOverlappingBookings() throws Exception, OverlappingBookingsException, BookingNotFoundException {
+
+        Booking booking = new Booking(0,1,"phone", "name", "email", new Date().getTime(), new Date().getTime());
+        Booking booking1 = new Booking(0,1,"phone", "name", "email", new Date().getTime(), new Date().getTime());
+        bookingService.create(booking);
+
+        Assert.assertThrows(OverlappingBookingsException.class, () -> {
+            bookingService.create(booking1);
+        });
     }
 }

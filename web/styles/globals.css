@@ -1,3 +1,36 @@
 html,
 body {
+    width: 100%;
+    height: 100%;
+    background-color: #F2F6FF;
+
+    background-image: url("/travel.svg");
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-size: 500px;
+}
+
+main {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.color-primary {
+    color: #3913B8;
+}
+
+.bg-primary {
+    background-color: #3913B8;
+}
+
+tr {
+    cursor: pointer;
+    white-space: no-wrap
+
+}
+
+.container {
+}
+
+.rdrCalendarWrapper {
+    width: 400px;
 }
