@@ -2,13 +2,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import axios from "axios";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-
-import type { Booking } from "../types";
 import Header from "../components/header";
 import BookingForm from "../components/BookingForm";
 
